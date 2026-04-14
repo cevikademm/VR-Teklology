@@ -60,7 +60,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(var(--
 <div id="topbar">
   <div class="brand"><div class="brand-dot"></div><h1>AR Hologram</h1></div>
   <div class="row"><input class="inp" id="urlInp" placeholder="GLB dosya URL'si yapıştırın..."><button class="btn" id="urlBtn">Yükle</button></div>
-  <div class="row" style="justify-content:center"><label class="btn btn-f" for="fileInp">📁 Dosya Seç</label><input type="file" id="fileInp" accept=".glb,.gltf,model/gltf-binary" style="display:none"></div>
+  <div class="row" style="justify-content:center"><label class="btn btn-f" for="fileInp">📁 Dosya Seç</label><input type="file" id="fileInp" style="display:none"></div>
   <div class="opts">
     <span class="lbl">Hız</span><input class="rng" id="spdRng" type="range" min="0" max="150" value="40">
     <button class="chip on" id="playChip">▶ Oto</button>
@@ -173,7 +173,7 @@ function setMdl(buf){
 }
 function applyMat(){if(!model)return;model.traverse(c=>{if(!c.isMesh)return;if(!c.userData.origColor){c.userData.origColor=c.material.color?c.material.color.clone():new THREE.Color(0x00e5ff);}const base=userCol!==null?new THREE.Color(userCol):c.userData.origColor.clone();const wireC=userCol!==null?userCol:0x00e5ff;c.material=wireF?new THREE.MeshBasicMaterial({color:wireC,wireframe:true,transparent:true,opacity:.7}):new THREE.MeshStandardMaterial({color:base,metalness:.6,roughness:.25,emissive:holoG?base.clone().multiplyScalar(.15):new THREE.Color(0),transparent:true,opacity:.92,side:THREE.DoubleSide});});}
 function updCam(){const d=mRad*4.2/zoom;camM.position.set(0,mRad*.7,d);camM.lookAt(0,mRad*.3,0);[0,Math.PI/2,Math.PI,-Math.PI/2].forEach((a,i)=>{camP[i].position.set(Math.sin(a)*d,d*.4,Math.cos(a)*d);camP[i].lookAt(0,mRad*.3,0);});}
-document.getElementById('fileInp').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;toast('Okunuyor...');const r=new FileReader();r.onload=()=>setMdl(r.result);r.onerror=()=>toast('⚠ Dosya okunamadı');r.readAsArrayBuffer(f);});
+document.getElementById('fileInp').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const nm=(f.name||'').toLowerCase();if(!nm.endsWith('.glb')&&!nm.endsWith('.gltf')){toast('⚠ Sadece .glb/.gltf dosyaları');return;}toast('Okunuyor...');const r=new FileReader();r.onload=()=>setMdl(r.result);r.onerror=()=>toast('⚠ Dosya okunamadı');r.readAsArrayBuffer(f);});
 function ldURL(u){if(!u)return;toast('İndiriliyor...');fetch(u).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(setMdl).catch(()=>toast('⚠ URL yüklenemedi'));}
 document.getElementById('urlBtn').addEventListener('click',()=>ldURL(document.getElementById('urlInp').value.trim()));
 document.getElementById('urlInp').addEventListener('keydown',e=>{if(e.key==='Enter')ldURL(e.target.value.trim());});
