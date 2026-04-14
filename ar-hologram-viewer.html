@@ -60,7 +60,7 @@ body::before{content:'';position:fixed;inset:0;background:linear-gradient(var(--
 <div id="topbar">
   <div class="brand"><div class="brand-dot"></div><h1>AR Hologram</h1></div>
   <div class="row"><input class="inp" id="urlInp" placeholder="GLB dosya URL'si yapıştırın..."><button class="btn" id="urlBtn">Yükle</button></div>
-  <div class="row" style="justify-content:center"><button class="btn btn-f">📁 Dosya Seç<input type="file" id="fileInp" accept=".glb,.gltf"></button></div>
+  <div class="row" style="justify-content:center"><label class="btn btn-f" for="fileInp">📁 Dosya Seç</label><input type="file" id="fileInp" accept=".glb,.gltf,model/gltf-binary" style="display:none"></div>
   <div class="opts">
     <span class="lbl">Hız</span><input class="rng" id="spdRng" type="range" min="0" max="150" value="40">
     <button class="chip on" id="playChip">▶ Oto</button>
